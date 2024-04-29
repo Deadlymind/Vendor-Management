@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from vendors.api import vendor_list_api
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('api/vendors/', vendor_list_api),
 ]
