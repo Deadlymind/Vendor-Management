@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Vendor
 from .serializers import VendorSerializer
-from rest_framework import status, generics
+from rest_framework import status, generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -53,8 +53,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 class VendorListApi(generics.ListCreateAPIView):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['name']
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['name', 'vendor_code', 'quality_rating_avg']
+    search_fields = "__all__"
 
 
 class VendorDetailApi(generics.RetrieveUpdateDestroyAPIView):
