@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 from .models import Vendor
 from .serializers import VendorSerializer
 from rest_framework import status, generics
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 # @api_view(['GET', 'POST'])
 # def vendor_list_api(request):
@@ -51,6 +53,8 @@ from rest_framework import status, generics
 class VendorListApi(generics.ListCreateAPIView):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name']
 
 
 class VendorDetailApi(generics.RetrieveUpdateDestroyAPIView):
