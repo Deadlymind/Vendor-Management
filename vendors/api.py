@@ -55,7 +55,7 @@ class VendorListApi(generics.ListCreateAPIView):
     serializer_class = VendorSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['name', 'vendor_code', 'quality_rating_avg']
-    search_fields = "__all__"
+    search_fields = ['name', 'vendor_code', 'quality_rating_avg', 'average_response_time', 'fulfillment_rate']
 
 
 class VendorDetailApi(generics.RetrieveUpdateDestroyAPIView):
