@@ -17,11 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from vendors.api import vendor_list_api, vendor_detail_api
+from vendors.api import vendor_list_api, vendor_detail_api, vendor_modify_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/vendors/', vendor_list_api),
     path('api/vendors/<int:id>/', vendor_detail_api),
+    path('api/vendors/<int:id>/modify/', vendor_modify_api),
 ]
