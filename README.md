@@ -1,5 +1,5 @@
 
-# Project Name
+# Vendor Management System
 
 This is a Django-based REST API designed to manage and track vendor performances, purchase orders, and related metrics. This system is essential for businesses looking to optimize their vendor interactions and improve operational efficiencies.
 
