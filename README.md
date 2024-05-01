@@ -69,6 +69,12 @@ Each endpoint allows for managing different aspects of the system:
   - `GET /api/historical-performances/`: Retrieve all historical performance records.
   - `POST /api/historical-performances/`: Log new performance data.
 
+
+## Swagger Documentation
+Access the Swagger UI to interact with the API visually at: http://127.0.0.1:8000/swagger/
+
+
+
 ## Contributing
 
 Interested in contributing? Great! Please fork the project, make your changes, and submit a pull request. We appreciate your input!
