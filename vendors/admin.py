@@ -1,23 +1,16 @@
 from django.contrib import admin
-from .models import Vendor, PurchaseOrder, HistoricalPerformance
+from .models import *
 
+
+@admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'vendor_code', 'on_time_delivery_rate', 'quality_rating_avg', 'average_response_time', 'fulfillment_rate')
-    search_fields = ('name', 'vendor_code')
-    list_filter = ('on_time_delivery_rate', 'quality_rating_avg')
+    list_display = ('id', 'created_at', 'updated_at', 'created_by', 'name', 'contact_details', 'address', 'vendor_code', 'on_time_delivery_rate', 'quality_rating_avg', 'average_response_time',
+                    'fulfillment_rate')
 
+@admin.register(PurchaseOrder)
 class PurchaseOrderAdmin(admin.ModelAdmin):
-    list_display = ('po_number', 'vendor', 'order_date', 'delivery_date', 'status')
-    search_fields = ('po_number', 'vendor__name')
-    list_filter = ('status', 'order_date')
-    date_hierarchy = 'order_date'
+    list_display = ('po_number', 'vendor', 'order_date', 'delivery_date', 'status', 'quality_rating', 'acknowledgment_date', 'response_time', 'on_time_delivery')
 
-class HistoricalPerformanceAdmin(admin.ModelAdmin):
-    list_display = ('vendor', 'date', 'on_time_delivery_rate', 'quality_rating_avg', 'average_response_time', 'fulfillment_rate')
-    search_fields = ('vendor__name',)
-    list_filter = ('date',)
-    date_hierarchy = 'date'
-
-admin.site.register(Vendor, VendorAdmin)
-admin.site.register(PurchaseOrder, PurchaseOrderAdmin)
-admin.site.register(HistoricalPerformance, HistoricalPerformanceAdmin)
+@admin.register(HistoricalPerformance)
+class HistorialPerformanceAdmin(admin.ModelAdmin):
+    list_display = ('vendor', 'on_time_delivery_rate', 'quality_rating_avg', 'average_response_time', 'fulfillment_rate', )

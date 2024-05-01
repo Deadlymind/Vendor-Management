@@ -1,122 +1,100 @@
 from django.db import models
-from django.core.exceptions import ValidationError
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils import timezone
+from django.contrib.auth.models import User
 
+# Choices for status field
+STATUS_CHOICES = (
+    ('Pending', 'Pending'),
+    ('Completed', 'Completed'),
+    ('Cancelled', 'Cancelled')
+)
 
+# Validator for status field
+def validate_status(value):
+    valid_choices = [choice[0] for choice in STATUS_CHOICES]
+    if value not in valid_choices:
+        raise ValueError('Invalid order status')
+    return True
 
+# Vendor model for vendor information
 class Vendor(models.Model):
-    """
-    Represents a vendor with detailed information and performance metrics.
-    Stores data related to vendor contact, performance statistics, and identification.
-
-    Fields:
-    - name: The name of the vendor.
-    - contact_details: Contact information such as phone number and email.
-    - address: Physical address of the vendor.
-    - vendor_code: Unique identifier for each vendor.
-    - on_time_delivery_rate: Percentage rate of deliveries made on time.
-    - quality_rating_avg: Average quality rating received from orders.
-    - average_response_time: Average time taken by the vendor to respond.
-    - fulfillment_rate: Rate of successfully fulfilled orders.
-    """
-    name = models.CharField(max_length=255)
-    contact_details = models.TextField()
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=50, unique=True)
+    contact_details = models.TextField(unique=True)
     address = models.TextField()
-    vendor_code = models.CharField(max_length=100, unique=True, db_index=True)
-    on_time_delivery_rate = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    quality_rating_avg = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(5)])
-    average_response_time = models.FloatField()
-    fulfillment_rate = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(100)])
+    vendor_code = models.CharField(max_length=50, unique=True)
+    on_time_delivery_rate = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True,help_text='Percentage of on time delivered POs')
+    quality_rating_avg = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True,help_text='Quality rating out of 10 on each POs')
+    average_response_time = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True,help_text='Average response time in hours')
+    fulfillment_rate = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True,help_text='Percentage of Successful POs')
 
     def __str__(self):
-        return f"{self.name} ({self.vendor_code})"
+        return self.name
 
-    def update_performance_metrics(self, **metrics):
-        """
-        Update performance metrics for a vendor.
-
-        Args:
-        - metrics: A dictionary of metric names and their new values.
-        """
-        try:
-            for attr, value in metrics.items():
-                setattr(self, attr, value)
-            self.save()
-        except Exception as e:
-            print(f"Error updating vendor metrics: {e}")
-
+# PurchaseOrder model for purchase order information
 class PurchaseOrder(models.Model):
-    """
-    Represents a purchase order, linking to a Vendor and tracking the order status,
-    items, and other metrics related to vendor performance evaluation.
-
-    Fields:
-    - po_number: Unique identifier for the purchase order.
-    - vendor: ForeignKey link to the Vendor model.
-    - order_date: Date when the order was placed.
-    - delivery_date: Expected or actual delivery date.
-    - items: JSON storing details of the items ordered.
-    - quantity: Total quantity of items ordered.
-    - status: Current status of the order (pending, completed, canceled).
-    - quality_rating: Rating given to the vendor for this specific order.
-    - issue_date: Date when the order was issued to the vendor.
-    - acknowledgment_date: Date when the order was acknowledged by the vendor.
-    """
-    STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('completed', 'Completed'),
-        ('canceled', 'Canceled'),
-    ]
-
-    po_number = models.CharField(max_length=100, unique=True, db_index=True)
-    vendor = models.ForeignKey(Vendor, related_name='purchase_orders', on_delete=models.SET_NULL, null=True)
-    order_date = models.DateTimeField()
-    delivery_date = models.DateTimeField()
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    po_number = models.CharField(max_length=50, primary_key=True, help_text='System created PO number')
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    order_date = models.DateTimeField(default=timezone.now)
+    delivery_date = models.DateTimeField(help_text='Expected or Actual delivery date')
     items = models.JSONField()
-    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
-    quality_rating = models.FloatField(null=True, blank=True)
-    issue_date = models.DateTimeField()
-    acknowledgment_date = models.DateTimeField(null=True, blank=True)
+    quantity = models.PositiveIntegerField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, null=True, blank=True,validators=[validate_status], default="Pending")
+    quality_rating = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True,help_text='Quality rate out of 10')
+    issue_date = models.DateTimeField(default=timezone.now)
+    acknowledgment_date = models.DateTimeField(null=True, blank=True,help_text='Date when vendor acknowledged POs')
+    response_time = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True,help_text='Time taken to acknowledge POs in hours')
+    on_time_delivery = models.BooleanField(default=False)
 
+    # Custom save method to handle logic on save
+    def save(self, *args, **kwargs):
+        # Generate PO number if not provided
+        if not self.po_number:
+            today = timezone.now().date()
+            last_po = PurchaseOrder.objects.filter(vendor=self.vendor).order_by('-order_date').first()
+            if last_po:
+                last_number = int(last_po.po_number.split('-')[-1])
+                new_number = last_number + 1
+            else:
+                new_number = 1
+            self.po_number = f'{self.vendor.vendor_code}-{today.strftime("%Y%m%d")}-{new_number:04d}'
+
+        # Calculate response time and update on-time delivery status
+        if self.issue_date and self.acknowledgment_date:
+            acknowledgment_date = self.acknowledgment_date.replace(tzinfo=None)
+            issue_date = self.issue_date.replace(tzinfo=None)
+            response_time = (acknowledgment_date - issue_date).total_seconds()
+            self.response_time = response_time / 3600
+
+        if self.status == "Completed":
+            if self.delivery_date is None:
+                self.delivery_date = timezone.now()
+                self.on_time_delivery = True
+            elif self.delivery_date > timezone.now():
+                self.on_time_delivery = True
+        else:
+            self.quality_rating = 0
+
+        super().save(*args, **kwargs)
+    
     def __str__(self):
-        return f"PO {self.po_number} - {self.status}"
+        return self.po_number
 
-    def clean(self):
-        """
-        Custom validation to ensure delivery date is not before order date.
-        """
-        if self.delivery_date < self.order_date:
-            raise ValidationError("Delivery date cannot be before the order date.")
-
-
-
-
+# HistoricalPerformance model for historical performance data
 class HistoricalPerformance(models.Model):
-    """
-    Tracks historical performance metrics of vendors over time to analyze trends.
-
-    Fields:
-    - vendor: ForeignKey link to the Vendor model.
-    - date: Date of the performance record.
-    - on_time_delivery_rate: Historical on-time delivery rate.
-    - quality_rating_avg: Historical average quality rating.
-    - average_response_time: Historical average response time.
-    - fulfillment_rate: Historical fulfillment rate.
-    """
-    vendor = models.ForeignKey(Vendor, related_name='historical_performances', on_delete=models.CASCADE)
-    date = models.DateTimeField(db_index=True)
-    on_time_delivery_rate = models.FloatField()
-    quality_rating_avg = models.FloatField()
-    average_response_time = models.FloatField()
-    fulfillment_rate = models.FloatField()
-
-    class Meta:
-        unique_together = ('vendor', 'date')
-        indexes = [
-            models.Index(fields=['vendor', 'date']),
-        ]
-        get_latest_by = "date"
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
+    on_time_delivery_rate = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    quality_rating_avg = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    average_response_time = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
+    fulfillment_rate = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.vendor.name} Performance on {self.date.strftime('%Y-%m-%d')}"
+        return self.vendor.name
