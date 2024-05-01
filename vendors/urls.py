@@ -17,7 +17,7 @@ urlpatterns = [
 
     # URLs for PurchaseOrders
     path('purchase_orders/', PurchaseOrderListApi.as_view(), name='purchase-order-list'),
-    path('purchase_orders/<int:pk>/', PurchaseOrderDetailApi.as_view(), name='purchase-order-detail'),
+    path('purchase_orders/<int:po_number>/', PurchaseOrderDetailApi.as_view(), name='purchase-order-detail'),
 
     # URLs for HistoricalPerformances
     path('historical_performances/', HistoricalPerformanceListApi.as_view(), name='historical-performance-list'),
