@@ -1,63 +1,58 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import Vendor
-from .serializers import VendorSerializer
-from rest_framework import status, generics, filters
+from rest_framework import generics, status, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-
-# @api_view(['GET', 'POST'])
-# def vendor_list_api(request):
-#     if request.method == 'GET':
-#         vendors = Vendor.objects.all()
-#         serializer = VendorSerializer(vendors, many=True)
-#         return Response({'data': serializer.data})
-#     elif request.method == 'POST':
-#         serializer = VendorSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-# def vendor_detail_api(request, id=None):
-#     vendor = get_object_or_404(Vendor, id=id)
-#     if request.method == 'GET':
-#         serializer = VendorSerializer(vendor)
-#         return Response({'data': serializer.data})
-#     elif request.method in ['PUT', 'PATCH']:
-#         serializer = VendorSerializer(vendor, data=request.data, partial=(request.method == 'PATCH'))
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#     elif request.method == 'DELETE':
-#         vendor.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
-# @api_view(['PUT', 'DELETE'])
-# def vendor_modify_api(request, id):
-#     vendor = get_object_or_404(Vendor, id=id)
-#     if request.method == 'PUT':
-#         serializer = VendorSerializer(vendor, data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#     elif request.method == 'DELETE':
-#         vendor.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
-
+from .models import Vendor, PurchaseOrder, HistoricalPerformance
+from .serializers import VendorSerializer, PurchaseOrderSerializer, HistoricalPerformanceSerializer
 
 class VendorListApi(generics.ListCreateAPIView):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
+    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['name', 'vendor_code', 'quality_rating_avg']
-    search_fields = ['name', 'vendor_code', 'quality_rating_avg', 'average_response_time', 'fulfillment_rate']
-
+    filterset_fields = ['name', 'vendor_code']
+    search_fields = ['name', 'vendor_code', 'contact_details']
 
 class VendorDetailApi(generics.RetrieveUpdateDestroyAPIView):
     queryset = Vendor.objects.all()
     serializer_class = VendorSerializer
+    permission_classes = [IsAuthenticated]
+
+class VendorPerformanceAPIView(APIView):
+    """
+    Retrieve performance metrics for a specific vendor.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        vendor = get_object_or_404(Vendor, pk=pk)
+        data = {
+            'on_time_delivery_rate': vendor.on_time_delivery_rate,
+            'quality_rating_avg': vendor.quality_rating_avg,
+            'average_response_time': vendor.average_response_time,
+            'fulfillment_rate': vendor.fulfillment_rate
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
+class PurchaseOrderListApi(generics.ListCreateAPIView):
+    queryset = PurchaseOrder.objects.all()
+    serializer_class = PurchaseOrderSerializer
+    permission_classes = [IsAuthenticated]
+
+class PurchaseOrderDetailApi(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PurchaseOrder.objects.all()
+    serializer_class = PurchaseOrderSerializer
+    permission_classes = [IsAuthenticated]
+
+class HistoricalPerformanceListApi(generics.ListCreateAPIView):
+    queryset = HistoricalPerformance.objects.all()
+    serializer_class = HistoricalPerformanceSerializer
+    permission_classes = [IsAuthenticated]
+
+class HistoricalPerformanceDetailApi(generics.RetrieveUpdateDestroyAPIView):
+    queryset = HistoricalPerformance.objects.all()
+    serializer_class = HistoricalPerformanceSerializer
+    permission_classes = [IsAuthenticated]

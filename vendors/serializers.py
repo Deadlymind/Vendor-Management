@@ -15,3 +15,4 @@ class HistoricalPerformanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = HistoricalPerformance
         fields = '__all__'
+
