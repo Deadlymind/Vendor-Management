@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vendors', '0006_historicalperformance_response_time'),
+        ("vendors", "0006_historicalperformance_response_time"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='historicalperformance',
-            name='response_time',
+            model_name="historicalperformance",
+            name="response_time",
         ),
         migrations.AddField(
-            model_name='purchaseorder',
-            name='response_time',
+            model_name="purchaseorder",
+            name="response_time",
             field=models.DurationField(blank=True, null=True),
         ),
     ]

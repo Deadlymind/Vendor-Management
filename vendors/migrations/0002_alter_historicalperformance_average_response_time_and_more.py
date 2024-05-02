@@ -6,43 +6,57 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vendors', '0001_initial'),
+        ("vendors", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='average_response_time',
-            field=models.FloatField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]),
+            model_name="historicalperformance",
+            name="average_response_time",
+            field=models.FloatField(
+                choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='fulfillment_rate',
-            field=models.FloatField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]),
+            model_name="historicalperformance",
+            name="fulfillment_rate",
+            field=models.FloatField(
+                choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='on_time_delivery_rate',
-            field=models.FloatField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]),
+            model_name="historicalperformance",
+            name="on_time_delivery_rate",
+            field=models.FloatField(
+                choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+            ),
         ),
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='quality_rating_avg',
-            field=models.FloatField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]),
+            model_name="historicalperformance",
+            name="quality_rating_avg",
+            field=models.FloatField(
+                choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+            ),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='fulfillment_rate',
-            field=models.FloatField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]),
+            model_name="vendor",
+            name="fulfillment_rate",
+            field=models.FloatField(
+                choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+            ),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='on_time_delivery_rate',
-            field=models.FloatField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]),
+            model_name="vendor",
+            name="on_time_delivery_rate",
+            field=models.FloatField(
+                choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+            ),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='quality_rating_avg',
-            field=models.FloatField(choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]),
+            model_name="vendor",
+            name="quality_rating_avg",
+            field=models.FloatField(
+                choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+            ),
         ),
     ]

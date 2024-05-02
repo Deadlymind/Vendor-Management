@@ -7,43 +7,61 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vendors', '0002_alter_historicalperformance_average_response_time_and_more'),
+        (
+            "vendors",
+            "0002_alter_historicalperformance_average_response_time_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='average_response_time',
+            model_name="historicalperformance",
+            name="average_response_time",
             field=models.FloatField(),
         ),
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='fulfillment_rate',
+            model_name="historicalperformance",
+            name="fulfillment_rate",
             field=models.FloatField(),
         ),
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='on_time_delivery_rate',
+            model_name="historicalperformance",
+            name="on_time_delivery_rate",
             field=models.FloatField(),
         ),
         migrations.AlterField(
-            model_name='historicalperformance',
-            name='quality_rating_avg',
+            model_name="historicalperformance",
+            name="quality_rating_avg",
             field=models.FloatField(),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='fulfillment_rate',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)]),
+            model_name="vendor",
+            name="fulfillment_rate",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(100),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='on_time_delivery_rate',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)]),
+            model_name="vendor",
+            name="on_time_delivery_rate",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(100),
+                ]
+            ),
         ),
         migrations.AlterField(
-            model_name='vendor',
-            name='quality_rating_avg',
-            field=models.FloatField(validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5)]),
+            model_name="vendor",
+            name="quality_rating_avg",
+            field=models.FloatField(
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(5),
+                ]
+            ),
         ),
     ]

@@ -7,13 +7,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vendors', '0003_alter_historicalperformance_average_response_time_and_more'),
+        (
+            "vendors",
+            "0003_alter_historicalperformance_average_response_time_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vendor',
-            name='expected_delivery_date',
+            model_name="vendor",
+            name="expected_delivery_date",
             field=models.DateTimeField(default=django.utils.timezone.now),
             preserve_default=False,
         ),

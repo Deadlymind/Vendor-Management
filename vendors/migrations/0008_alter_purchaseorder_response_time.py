@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('vendors', '0007_remove_historicalperformance_response_time_and_more'),
+        (
+            "vendors",
+            "0007_remove_historicalperformance_response_time_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='purchaseorder',
-            name='response_time',
+            model_name="purchaseorder",
+            name="response_time",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]
