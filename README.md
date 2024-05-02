@@ -15,7 +15,7 @@ This is a Django-based REST API designed to manage and track vendor performances
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/Deadlymind/Vendor-Management.git
-   cd project
+   cd Vendor-Management
    ```
 
 2. **Create and activate a virtual environment:**
