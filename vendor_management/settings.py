@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     "django_filters",
     'pytest_django',
+    'rest_framework_simplejwt',
     # apps
     "vendors",
 ]
@@ -61,7 +62,10 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend"
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 ROOT_URLCONF = "vendor_management.urls"
