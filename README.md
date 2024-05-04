@@ -48,19 +48,23 @@ This is a Django-based REST API designed to manage and track vendor performances
 
 ## Authentication Setup
 
-This project uses JSON Web Tokens (JWT) and `dj-rest-auth` for handling authentication. Ensure you have installed the necessary packages.
-
-### Authentication Endpoints
-
-- `/dj-rest-auth/login/` (POST): Log in a user.
-- `/dj-rest-auth/logout/` (POST): Log out the current user.
-- `/dj-rest-auth/password/change/` (POST): Change the password for the current user.
-
-For JWT token management:
-- `/dj-rest-auth/token/` (POST): Obtain a new JWT.
-- `/dj-rest-auth/token/refresh/` (POST): Refresh an existing JWT.
+This project uses JSON Web Tokens (JWT) and `dj-rest-auth` for handling authentication. Ensure you have installed the necessary packages .
 
 ## API Endpoints
+
+Each endpoint allows for managing different aspects of the system:
+
+The following are some of the available authentication endpoints provided by `dj-rest-auth`:
+
+- `/api-auth/login/` (POST): Log in a user.
+- `/api-auth/logout/` (POST): Log out the current user.
+- `/api-auth/password/change/` (POST): Change the password for the current user.
+
+For JWT token management:
+- `/api/token/` (POST): 
+- `/api/token/refresh/` (POST): Refresh an existing JWT.
+
+---
 
 - **Vendors:**
   - `GET /api/vendors/`: Retrieve a list of all vendors.
@@ -81,8 +85,14 @@ For JWT token management:
   - `GET /api/historical-performances/`: Retrieve all historical performance records.
   - `POST /api/historical-performances/`: Log new performance data.
 
+
 ## Swagger Documentation
 Access the Swagger UI to interact with the API visually at: http://127.0.0.1:8000/swagger/
+
+
+
+
+
 
 ## Contributing
 
@@ -91,3 +101,5 @@ Interested in contributing? Great! Please fork the project, make your changes, a
 ## License
 
 This project is licensed under the [MIT License](https://deadlymind.vercel.app/).
+
+---
