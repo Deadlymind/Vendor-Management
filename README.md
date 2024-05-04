@@ -1,5 +1,4 @@
 
-```markdown
 # Vendor Management System
 
 This is a Django-based REST API designed to manage and track vendor performances, purchase orders, and related metrics. This system is essential for businesses looking to optimize their vendor interactions and improve operational efficiencies.
@@ -92,4 +91,3 @@ Interested in contributing? Great! Please fork the project, make your changes, a
 ## License
 
 This project is licensed under the [MIT License](https://deadlymind.vercel.app/).
-```
