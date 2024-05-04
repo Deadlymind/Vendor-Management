@@ -25,6 +25,7 @@ class Vendor(models.Model):
     Represents a vendor in the system with related
     details and performance metrics.
     """
+
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -73,6 +74,7 @@ class PurchaseOrder(models.Model):
     Tracks purchase orders including details about vendors,
     order and delivery dates, and status.
     """
+
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -160,6 +162,7 @@ class HistoricalPerformance(models.Model):
     """
     Stores historical performance data for vendors to track changes over time.
     """
+
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True
     )

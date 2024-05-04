@@ -6,11 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import HistoricalPerformance, PurchaseOrder, Vendor
-from .serializers import (
-    HistoricalPerformanceSerializer,
-    PurchaseOrderSerializer,
-    VendorSerializer,
-)
+from .serializers import (HistoricalPerformanceSerializer,
+                          PurchaseOrderSerializer, VendorSerializer)
 
 
 class VendorListApi(generics.ListCreateAPIView):
@@ -56,8 +53,7 @@ class PurchaseOrderDetailApi(generics.RetrieveUpdateDestroyAPIView):
     queryset = PurchaseOrder.objects.all()
     serializer_class = PurchaseOrderSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = 'po_number'
-
+    lookup_field = "po_number"
 
 
 class HistoricalPerformanceListApi(generics.ListCreateAPIView):

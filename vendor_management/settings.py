@@ -41,29 +41,28 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # packages
     "rest_framework",
-    'rest_framework.authtoken',  # Add this line
+    "rest_framework.authtoken",  # Add this line
     "drf_yasg",
     "django_filters",
-    'pytest_django',
-    'rest_framework_simplejwt',
-    'dj_rest_auth',
-
+    "pytest_django",
+    "rest_framework_simplejwt",
+    "dj_rest_auth",
     # apps
     "vendors",
 ]
 
 REST_AUTH = {
-    'USE_JWT': True,
-    'JWT_AUTH_COOKIE': 'jwt-auth',
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "jwt-auth",
 }
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend"
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 

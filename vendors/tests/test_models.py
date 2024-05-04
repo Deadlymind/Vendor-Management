@@ -1,7 +1,10 @@
-from django.test import TestCase
-from vendors.models import Vendor, PurchaseOrder, HistoricalPerformance
-from django.utils import timezone
 from datetime import timedelta
+
+from django.test import TestCase
+from django.utils import timezone
+
+from vendors.models import HistoricalPerformance, PurchaseOrder, Vendor
+
 
 class VendorModelTest(TestCase):
     def setUp(self):
@@ -14,7 +17,7 @@ class VendorModelTest(TestCase):
             on_time_delivery_rate=99.5,
             quality_rating_avg=4.8,
             average_response_time=24.0,
-            fulfillment_rate=95.0
+            fulfillment_rate=95.0,
         )
 
     def test_string_representation(self):
@@ -33,8 +36,8 @@ class VendorModelTest(TestCase):
 
     def test_field_labels(self):
         # Test label for a specific field.
-        field_label = self.vendor._meta.get_field('name').verbose_name
-        self.assertEqual(field_label, 'name')
+        field_label = self.vendor._meta.get_field("name").verbose_name
+        self.assertEqual(field_label, "name")
 
 
 class PurchaseOrderModelTest(TestCase):
@@ -44,7 +47,7 @@ class PurchaseOrderModelTest(TestCase):
             name="Sample Vendor",
             contact_details="987654321",
             address="456 Test Lane, Testville",
-            vendor_code="V002"
+            vendor_code="V002",
         )
         self.purchase_order = PurchaseOrder.objects.create(
             po_number="PO123456",
@@ -53,13 +56,15 @@ class PurchaseOrderModelTest(TestCase):
             delivery_date=timezone.now() + timedelta(days=5),
             items={"item1": "Test item", "qty": 10},
             quantity=10,
-            status="Pending"
+            status="Pending",
         )
 
     def test_po_creation(self):
         # Test that the purchase order is created correctly.
         self.assertTrue(isinstance(self.purchase_order, PurchaseOrder))
-        self.assertEqual(self.purchase_order.__str__(), self.purchase_order.po_number)
+        self.assertEqual(
+            self.purchase_order.__str__(), self.purchase_order.po_number
+        )
 
     def test_po_fields(self):
         # Test specific fields for correct values
@@ -68,7 +73,9 @@ class PurchaseOrderModelTest(TestCase):
 
     def test_po_date_logic(self):
         # Test the logic applied to dates
-        self.assertFalse(self.purchase_order.delivery_date < self.purchase_order.order_date)
+        self.assertFalse(
+            self.purchase_order.delivery_date < self.purchase_order.order_date
+        )
 
 
 class HistoricalPerformanceModelTest(TestCase):
@@ -78,14 +85,14 @@ class HistoricalPerformanceModelTest(TestCase):
             name="Historical Vendor",
             contact_details="123456789",
             address="789 History St, Pastville",
-            vendor_code="V003"
+            vendor_code="V003",
         )
         self.performance = HistoricalPerformance.objects.create(
             vendor=self.vendor,
             on_time_delivery_rate=88.5,
             quality_rating_avg=3.5,
             average_response_time=48.0,
-            fulfillment_rate=75.0
+            fulfillment_rate=75.0,
         )
 
     def test_historical_performance_creation(self):
@@ -99,4 +106,3 @@ class HistoricalPerformanceModelTest(TestCase):
         self.assertAlmostEqual(self.performance.quality_rating_avg, 3.5)
         self.assertAlmostEqual(self.performance.average_response_time, 48.0)
         self.assertAlmostEqual(self.performance.fulfillment_rate, 75.0)
-

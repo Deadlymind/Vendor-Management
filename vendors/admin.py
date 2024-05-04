@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Vendor, PurchaseOrder, HistoricalPerformance
+
+from .models import HistoricalPerformance, PurchaseOrder, Vendor
 
 
 @admin.register(Vendor)
@@ -7,6 +8,7 @@ class VendorAdmin(admin.ModelAdmin):
     """
     Admin panel for managing vendor information.
     """
+
     list_display = (
         "id",
         "created_at",
@@ -28,6 +30,7 @@ class PurchaseOrderAdmin(admin.ModelAdmin):
     """
     Admin panel for managing purchase orders.
     """
+
     list_display = (
         "po_number",
         "vendor",
@@ -46,6 +49,7 @@ class HistoricalPerformanceAdmin(admin.ModelAdmin):
     """
     Admin panel for managing historical performance metrics.
     """
+
     list_display = (
         "vendor",
         "on_time_delivery_rate",
