@@ -46,9 +46,25 @@ This is a Django-based REST API designed to manage and track vendor performances
 
    Access the development server at http://127.0.0.1:8000/.
 
+## Authentication Setup
+
+This project uses JSON Web Tokens (JWT) and `dj-rest-auth` for handling authentication. Ensure you have installed the necessary packages .
+
 ## API Endpoints
 
 Each endpoint allows for managing different aspects of the system:
+
+The following are some of the available authentication endpoints provided by `dj-rest-auth`:
+
+- `/api-auth/login/` (POST): Log in a user.
+- `/api-auth/logout/` (POST): Log out the current user.
+- `/api-auth/password/change/` (POST): Change the password for the current user.
+
+For JWT token management:
+- `/api/token/` (POST): 
+- `/api/token/refresh/` (POST): Refresh an existing JWT.
+
+---
 
 - **Vendors:**
   - `GET /api/vendors/`: Retrieve a list of all vendors.
@@ -72,6 +88,9 @@ Each endpoint allows for managing different aspects of the system:
 
 ## Swagger Documentation
 Access the Swagger UI to interact with the API visually at: http://127.0.0.1:8000/swagger/
+
+
+
 
 
 
