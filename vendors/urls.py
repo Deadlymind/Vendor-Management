@@ -1,8 +1,10 @@
 from django.urls import path
 
-from .api import (HistoricalPerformanceDetailApi, HistoricalPerformanceListApi,
-                PurchaseOrderDetailApi, PurchaseOrderListApi,
-                VendorDetailApi, VendorListApi, VendorPerformanceAPIView)
+from .api import (
+    HistoricalPerformanceDetailApi, HistoricalPerformanceListApi,
+    PurchaseOrderDetailApi, PurchaseOrderListApi,
+    VendorDetailApi, VendorListApi, VendorPerformanceAPIView
+    )
 
 urlpatterns = [
     # URLs for Vendors

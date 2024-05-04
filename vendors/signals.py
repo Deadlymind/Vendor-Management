@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from .models import HistoricalPerformance, PurchaseOrder
 
-# Configure logger
+# configure logger
 logger = logging.getLogger(__name__)
 
 
@@ -68,7 +68,7 @@ def update_on_time_delivery_rate(vendor):
             vendor.on_time_delivery_rate = (on_time / total_completed) * 100
     except Exception as e:
         logger.error(
-            f"Error updating on-time delivery rate for vendor {vendor.id}: {str(e)}"
+            f"Error updating on-time delivery rate {vendor.id}: {str(e)}"
         )
 
 
@@ -83,7 +83,7 @@ def update_quality_rating_average(vendor):
             )["quality_rating__avg"]
     except Exception as e:
         logger.error(
-            f"Error updating quality rating average for vendor {vendor.id}: {str(e)}"
+            f"Error updating quality rating average{vendor.id}: {str(e)}"
         )
 
 
@@ -102,7 +102,7 @@ def update_average_response_time(vendor):
             ) / 3600  # Convert seconds to hours
     except Exception as e:
         logger.error(
-            f"Error updating average response time for vendor {vendor.id}: {str(e)}"
+            f"Error updating average response time {vendor.id}: {str(e)}"
         )
 
 
@@ -116,5 +116,5 @@ def update_fulfillment_rate(vendor):
             vendor.fulfillment_rate = (completed_orders / total_orders) * 100
     except Exception as e:
         logger.error(
-            f"Error updating fulfillment rate for vendor {vendor.id}: {str(e)}"
+            f"Error updating fulfillment rate {vendor.id}: {str(e)}"
         )

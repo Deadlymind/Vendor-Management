@@ -7,16 +7,22 @@ from decimal import Decimal
 from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 
+
 class BaseTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         # create a user and generate a JWT for them
-        cls.user = User.objects.create_user(username='testuser', password='testpassword')
+        cls.user = User.objects.create_user(
+            username='testuser',
+            password='testpassword'
+            )
         cls.token = RefreshToken.for_user(cls.user)
 
     def setUp(self):
         # authenticate using the token
-        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.token.access_token}')
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {self.token.access_token}')
+
 
 class VendorAPITestCase(BaseTestCase):
     def setUp(self):
@@ -40,6 +46,7 @@ class VendorAPITestCase(BaseTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], "Test Vendor")
+
 
 class PurchaseOrderAPITestCase(BaseTestCase):
     def setUp(self):
@@ -69,9 +76,12 @@ class PurchaseOrderAPITestCase(BaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_purchase_order_detail(self):
-        url = reverse("purchase-order-detail", kwargs={'po_number': self.purchase_order.po_number})
+        url = reverse(
+            "purchase-order-detail",
+            kwargs={'po_number': self.purchase_order.po_number})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
 
 class HistoricalPerformanceAPITestCase(BaseTestCase):
     def setUp(self):
@@ -94,6 +104,8 @@ class HistoricalPerformanceAPITestCase(BaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_historical_performance_detail(self):
-        url = reverse("historical-performance-detail", kwargs={'pk': self.performance.pk})
+        url = reverse(
+            "historical-performance-detail",
+            kwargs={'pk': self.performance.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

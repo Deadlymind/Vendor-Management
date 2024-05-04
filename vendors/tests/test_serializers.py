@@ -1,11 +1,14 @@
 from decimal import Decimal
 
 from django.test import TestCase
-from rest_framework.test import APIClient
+from django.utils import timezone
 
 from vendors.models import HistoricalPerformance, PurchaseOrder, Vendor
-from vendors.serializers import (HistoricalPerformanceSerializer,
-                                 PurchaseOrderSerializer, VendorSerializer)
+from vendors.serializers import (
+    HistoricalPerformanceSerializer,
+    PurchaseOrderSerializer,
+    VendorSerializer
+    )
 
 
 class VendorSerializerTest(TestCase):
@@ -34,21 +37,11 @@ class VendorSerializerTest(TestCase):
         self.assertEqual(data["fulfillment_rate"], "75.50")
 
 
-from decimal import Decimal
-
-from django.test import TestCase
-from django.utils import timezone
-
-from vendors.models import PurchaseOrder, Vendor
-from vendors.serializers import PurchaseOrderSerializer
-
-
 class PurchaseOrderSerializerTest(TestCase):
     def setUp(self):
         self.vendor = Vendor.objects.create(
             name="Test Vendor", vendor_code="V123"
         )
-        # Ensure the dates are correctly handled as timezone aware
         self.purchase_order = PurchaseOrder.objects.create(
             vendor=self.vendor,
             order_date=timezone.make_aware(timezone.datetime(2024, 1, 1)),
@@ -58,9 +51,7 @@ class PurchaseOrderSerializerTest(TestCase):
             status="Pending",
             quality_rating=Decimal("4.0"),
             issue_date=timezone.make_aware(timezone.datetime(2024, 1, 1)),
-            acknowledgment_date=timezone.make_aware(
-                timezone.datetime(2024, 1, 2)
-            ),
+            acknowledgment_date=timezone.make_aware(timezone.datetime(2024, 1, 2)),
             response_time=Decimal("24"),
             on_time_delivery=True,
         )
@@ -85,7 +76,7 @@ class HistoricalPerformanceSerializerTest(TestCase):
             name="Test Vendor", vendor_code="V123"
         )
         self.performance = HistoricalPerformance.objects.create(
-            created_by=None,  # Assuming User is nullable
+            created_by=None,
             vendor=self.vendor,
             on_time_delivery_rate=Decimal("99.5"),
             quality_rating_avg=Decimal("4.5"),
